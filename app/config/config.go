@@ -7,10 +7,11 @@ import (
 )
 
 type ConfigList struct {
-	ApiKey    string
-	ApiSecret string
-	LogFile   string
-	BaseUrl   string
+	ApiKey        string
+	ApiSecret     string
+	LogFile       string
+	BaseUrl       string
+	GetBalanceUrl string
 }
 
 var Config ConfigList
@@ -21,9 +22,10 @@ func init() {
 		log.Fatalln("fail to load Config", err)
 	}
 	Config = ConfigList{
-		ApiKey:    cfg.Section("bitflyer").Key("api_key").String(),
-		ApiSecret: cfg.Section("bitflyer").Key("api_secret").String(),
-		LogFile:   cfg.Section("auto-trading").Key("log_file").String(),
-		BaseUrl:   cfg.Section("auto-trading").Key("base_url").String(),
+		ApiKey:        cfg.Section("bitflyer").Key("api_key").String(),
+		ApiSecret:     cfg.Section("bitflyer").Key("api_secret").String(),
+		LogFile:       cfg.Section("auto-trading").Key("log_file").String(),
+		BaseUrl:       cfg.Section("auto-trading").Key("base_url").String(),
+		GetBalanceUrl: cfg.Section("auto-trading").Key("get_balance_url").String(),
 	}
 }
