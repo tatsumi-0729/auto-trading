@@ -2,7 +2,7 @@ package main
 
 import (
 	// go mod initで、プロジェクトのパスを登録しないとエラーになる。
-	// "auto-trading/app/bitflyer"
+	"auto-trading/app/bitflyer"
 	"auto-trading/app/config"
 	"auto-trading/app/util"
 	"fmt"
@@ -10,6 +10,6 @@ import (
 
 func main() {
 	util.Logging(config.Config.LogFile)
-	fmt.Println(config.Config.ApiKey, config.Config.ApiSecret)
-
+	apiClient := bitflyer.New(config.Config.ApiKey, config.Config.ApiSecret)
+	fmt.Println(apiClient.GetBalance())
 }
