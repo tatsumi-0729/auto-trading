@@ -62,7 +62,7 @@ func (api *ApiClient) sendRequest(method, urlPath string, query map[string]strin
 	if err != nil {
 		log.Fatalf("リクエストの作成に失敗しました。リクエスト=%s", req, err.Error())
 	}
-	// クエリ(パラメータ)を取得する
+	// クエリ(リクエストパラメータ)を取得する
 	q := req.URL.Query()
 	for k, v := range query {
 		q.Add(k, v)
@@ -78,14 +78,14 @@ func (api *ApiClient) sendRequest(method, urlPath string, query map[string]strin
 	// リクエストを送信する
 	res, err := api.httpClient.Do(req)
 	if err != nil {
-		log.Fatalf("リクエストの送信に失敗しました。レスポンス=%s", res, err.Error())
+		log.Fatalln("リクエストの送信に失敗しました。", err.Error())
 	}
 
 	defer res.Body.Close()
 	// レスポンスボディを読み込む
 	body, err = ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Fatalf("レスポンスボディの読み込みに失敗しました", err.Error())
+		log.Fatalln("レスポンスボディの読み込みに失敗しました", err.Error())
 	}
 	return body, err
 }
@@ -93,14 +93,16 @@ func (api *ApiClient) sendRequest(method, urlPath string, query map[string]strin
 // 自分の資産情報を取得する
 func (api *ApiClient) GetBalance() (string, error) {
 	url := config.Config.GetBalanceUrl
-	res, err := http.Get(url)
+	req, _ := http.NewRequest("GET", url, nil)
+	res, err := api.httpClient.Do(req)
 	if err != nil {
-		log.Fatalf("リクエストの送信に失敗しました。", err.Error())
+		log.Fatalln("リクエストの送信に失敗しました。", err.Error())
 	}
 	// レスポンスボディを読み込む
+	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Fatalf("レスポンスボディの読み込みに失敗しました", err.Error())
+		log.Fatalln("レスポンスボディの読み込みに失敗しました", err.Error())
 	}
 	return string(body), err
 }
