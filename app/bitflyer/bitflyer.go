@@ -22,6 +22,12 @@ type ApiClient struct {
 	httpClient *http.Client
 }
 
+// コンストラクタ
+func New(key, secret string) *ApiClient {
+	apiClient := &ApiClient{key, secret, &http.Client{}}
+	return apiClient
+}
+
 // ヘッダーを作成するメソッド(hmacで認証)
 func (api ApiClient) header(method, endpoint string, body []byte) map[string]string {
 	// Unix()でタイムスタンプ型にする
@@ -92,8 +98,11 @@ func (api *ApiClient) sendRequest(method, urlPath string, query map[string]strin
 
 // 自分の資産情報を取得する
 func (api *ApiClient) GetBalance() (string, error) {
-	url := config.Config.GetBalanceUrl
-	req, _ := http.NewRequest("GET", url, nil)
+	url := config.Config.BaseUrl + config.Config.GetBalanceUrl
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Fatalln("リクエストの作成に失敗しました。", err.Error())
+	}
 	res, err := api.httpClient.Do(req)
 	if err != nil {
 		log.Fatalln("リクエストの送信に失敗しました。", err.Error())
