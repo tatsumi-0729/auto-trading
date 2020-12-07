@@ -7,3 +7,29 @@
 2020/12/05 22:23:15 https://api.bitflyer.com/v1/
 2020/12/06 21:29:21 リクエストの送信に失敗しました。 Get "me/getbalance": unsupported protocol scheme ""
 2020/12/06 21:30:25 リクエストの送信に失敗しました。 Get "me/getbalance": unsupported protocol scheme ""
+2020/12/06 21:54:43 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/06 21:55:46 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/06 21:56:09 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/06 21:56:23 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/06 22:06:37 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/07 19:54:06 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/07 19:59:03 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/07 19:59:46 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal object into Go value of type []bitflyer.Balance
+2020/12/07 20:04:48 リクエストの送信に失敗しました。 Get "me/getbalance": unsupported protocol scheme ""
+2020/12/07 20:08:15 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/07 20:08:15 1607339295
+2020/12/07 20:10:14 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/07 20:10:14 1607339414
+2020/12/07 20:13:34 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/07 20:13:34 1607339614
+2020/12/07 20:13:35 endpoint=https://api.bitflyer.com/v1/ticker
+2020/12/07 20:13:35 1607339615
+2020/12/07 20:13:35 レスポンスのjsonの紐付けに失敗しました json: cannot unmarshal number 0.0309 into Go struct field Ticker.best_bid of type int
+2020/12/07 20:14:11 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/07 20:14:11 1607339651
+2020/12/07 20:14:12 endpoint=https://api.bitflyer.com/v1/ticker
+2020/12/07 20:14:12 1607339652
+2020/12/07 20:14:24 endpoint=https://api.bitflyer.com/v1/ticker
+2020/12/07 20:14:24 1607339664
+2020/12/07 20:14:35 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/07 20:14:35 1607339675
