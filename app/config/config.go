@@ -30,3 +30,4 @@ func init() {
 		GetBalanceUrl: cfg.Section("auto-trading").Key("get_balance_url").String(),
 		GetTickerUrl:  cfg.Section("auto-trading").Key("get_ticker_url").String(),
 	}
+}
