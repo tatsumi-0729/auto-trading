@@ -136,7 +136,7 @@ type Ticker struct {
 	VolumeByProduct float64 `json:"volume_by_product"`
 }
 
-// Bitcoinのデーターを取得する
+// Bitcoinのデータを取得する
 func (api *ApiClient) GetTicker(product_code string) (*Ticker, error) {
 	url := config.Config.GetTickerUrl
 	res, err := api.doRequest("GET", url, map[string]string{"product_code": product_code}, nil)
