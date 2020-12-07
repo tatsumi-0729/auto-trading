@@ -12,4 +12,5 @@ func main() {
 	util.Logging(config.Config.LogFile)
 	apiClient := bitflyer.New(config.Config.ApiKey, config.Config.ApiSecret)
 	fmt.Println(apiClient.GetBalance())
+	fmt.Println(apiClient.GetTicker("FX_BTC_JPY"))
 }

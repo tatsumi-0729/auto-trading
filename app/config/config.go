@@ -12,6 +12,7 @@ type ConfigList struct {
 	LogFile       string
 	BaseUrl       string
 	GetBalanceUrl string
+	GetTickerUrl  string
 }
 
 var Config ConfigList
@@ -27,5 +28,5 @@ func init() {
 		LogFile:       cfg.Section("auto-trading").Key("log_file").String(),
 		BaseUrl:       cfg.Section("auto-trading").Key("base_url").String(),
 		GetBalanceUrl: cfg.Section("auto-trading").Key("get_balance_url").String(),
+		GetTickerUrl:  cfg.Section("auto-trading").Key("get_ticker_url").String(),
 	}
-}
