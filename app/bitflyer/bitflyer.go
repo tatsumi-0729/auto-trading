@@ -6,6 +6,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -50,7 +51,7 @@ func (api ApiClient) header(method, endpoint string, body []byte) map[string]str
 }
 
 // httpリクエストを送信するメソッド
-func (api *ApiClient) sendRequest(method, urlPath string, query map[string]string, data []byte) (body []byte, err error) {
+func (api *ApiClient) doRequest(method, urlPath string, query map[string]string, data []byte) (body []byte, err error) {
 	// urlが正しいものか、パースで検証する
 	baseUrl, err := url.Parse(baseUrl)
 	if err != nil {
@@ -96,22 +97,56 @@ func (api *ApiClient) sendRequest(method, urlPath string, query map[string]strin
 	return body, err
 }
 
+type Balance struct {
+	CurrentCode string  `json:"current_code"`
+	Amount      float64 `json:"amount"`
+	Available   float64 `json:"available"`
+}
+
 // 自分の資産情報を取得する
-func (api *ApiClient) GetBalance() (string, error) {
-	url := config.Config.BaseUrl + config.Config.GetBalanceUrl
-	req, err := http.NewRequest("GET", url, nil)
+func (api *ApiClient) GetBalance() ([]Balance, error) {
+	url := config.Config.GetBalanceUrl
+	res, err := api.doRequest("GET", url, map[string]string{}, nil)
 	if err != nil {
 		log.Fatalln("リクエストの作成に失敗しました。", err.Error())
 	}
-	res, err := api.httpClient.Do(req)
-	if err != nil {
-		log.Fatalln("リクエストの送信に失敗しました。", err.Error())
+	// レスポンスのjsonとbalanceをmarshalで紐付ける
+	var balance []Balance
+	if err = json.Unmarshal(res, &balance); err != nil {
+		log.Fatalln("レスポンスのjsonの紐付けに失敗しました", err.Error())
 	}
-	// レスポンスボディを読み込む
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	return balance, err
+}
+
+type Ticker struct {
+	ProductCode     string  `json:"product_code"`
+	State           string  `json:"state"`
+	Timestamp       string  `json:"timestamp"`
+	TickID          float64 `json:"tick_id"`
+	BestBid         float64 `json:"best_bid"`
+	BestAsk         float64 `json:"best_ask"`
+	BestBidSize     float64 `json:"best_bid_size"`
+	BestAskSize     float64 `json:"best_ask_size"`
+	TotalBidDepth   float64 `json:"total_bid_depth"`
+	TotalAskDepth   float64 `json:"total_ask_depth"`
+	MarketBidSize   float64 `json:"market_bid_size"`
+	MarketAskSize   float64 `json:"market_ask_size"`
+	Ltp             float64 `json:"ltp"`
+	Volume          float64 `json:"volume"`
+	VolumeByProduct float64 `json:"volume_by_product"`
+}
+
+// Bitcoinのデーターを取得する
+func (api *ApiClient) GetTicker(product_code string) (*Ticker, error) {
+	url := config.Config.GetTickerUrl
+	res, err := api.doRequest("GET", url, map[string]string{"product_code": product_code}, nil)
 	if err != nil {
-		log.Fatalln("レスポンスボディの読み込みに失敗しました", err.Error())
+		log.Fatalln("リクエストの作成に失敗しました。", err.Error())
 	}
-	return string(body), err
+	// レスポンスのjsonとbalanceをmarshalで紐付ける
+	var ticker Ticker
+	if err = json.Unmarshal(res, &ticker); err != nil {
+		log.Fatalln("レスポンスのjsonの紐付けに失敗しました", err.Error())
+	}
+	return &ticker, err
 }
