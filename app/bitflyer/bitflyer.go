@@ -136,6 +136,25 @@ type Ticker struct {
 	VolumeByProduct float64 `json:"volume_by_product"`
 }
 
+// 売値と買値の中間を返す
+func (t *Ticker) GetMidPrice() float64 {
+	return (t.BestBid + t.BestAsk) / 2
+}
+
+// DB保存用の時間を変換する
+func (t *Ticker) DateTime() time.Time {
+	dataTime, err := time.Parse(time.RFC3339, t.Timestamp)
+	if err != nil {
+		log.Fatalf("時間の取得ができませんでした %s", err)
+	}
+	return dataTime
+}
+
+// 分と秒をトランケイト(0にする)
+func (t *Ticker) TruncateDateTime(duration time.Duration) time.Time {
+	return t.DateTime().Truncate(duration)
+}
+
 // Bitcoinのデータを取得する
 func (api *ApiClient) GetTicker(product_code string) (*Ticker, error) {
 	url := config.Config.GetTickerUrl
