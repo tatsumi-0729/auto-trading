@@ -33,3 +33,8 @@
 2020/12/07 20:14:24 1607339664
 2020/12/07 20:14:35 endpoint=https://api.bitflyer.com/v1/me/getbalance
 2020/12/07 20:14:35 1607339675
+2020/12/09 21:48:26 endpoint=https://api.bitflyer.com/v1/me/getbalance
+2020/12/09 21:48:26 1607518106
+2020/12/09 22:04:26 endpoint=https://api.bitflyer.com/v1/ticker
+2020/12/09 22:04:26 1607519066
+2020/12/09 22:04:26 時間の取得ができませんでした parsing time "2020-12-09T13:04:22.66" as "2006-01-02T15:04:05Z07:00": cannot parse "" as "Z07:00"
