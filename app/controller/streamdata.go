@@ -11,7 +11,7 @@ func StreamIngestionData() {
 	// tickerを扱うチャネルを作成
 	var tickerChannel = make(chan bitflyer.Ticker)
 	apiClient := bitflyer.New(config.Config.ApiKey, config.Config.ApiSecret)
-	// goroutinでリアルタイム取得処理を走らせる
+	// goroutinでtickerリアルタイム取得処理を走らせる
 	go apiClient.GetRealTimeTicker(config.Config.ProductCode, tickerChannel)
 	go func() {
 		for ticker := range tickerChannel {

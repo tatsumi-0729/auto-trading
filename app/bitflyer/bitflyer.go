@@ -186,7 +186,8 @@ type SubscribeParams struct {
 
 // tickerをリアルタイムで取得する
 func (api *APIClient) GetRealTimeTicker(symbol string, ch chan<- Ticker) {
-	u := url.URL{Scheme: config.Config.GetRealTimeTickerSchema, Host: config.Config.GetRealTimeTickerHost, Path: config.Config.GetRealTimeTickerPath}
+	u := url.URL{Scheme: config.Config.GetRealTimeTickerSchema,
+		Host: config.Config.GetRealTimeTickerHost, Path: config.Config.GetRealTimeTickerPath}
 	log.Printf("connecting to %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)

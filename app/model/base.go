@@ -23,7 +23,7 @@ func GetCandleTableName(productCode string, duration time.Duration) string {
 
 func init() {
 	// DBコネクションを行う
-	// ※コネクションは随時行う為、errの定義が「err :=」だと、再定義出来ないのでpanicが起こる
+	// ※コネクションは随時行う為、errの定義が「err :=」だと、再定義出来ない関係でpanicが起こる
 	var err error
 	DbConnection, err = sql.Open(config.Config.SQLDriver, config.Config.DbName)
 	if err != nil {
@@ -42,7 +42,7 @@ func init() {
 
 	// 設定したデュレーションの数文のテーブルを作成する
 	for _, duration := range config.Config.Durations {
-		// 引数を%s_%sで繋げて名前を取得する
+		// 引数を%s_%sで繋げた名前を取得する
 		tableName := GetCandleTableName(config.Config.ProductCode, duration)
 		sql = fmt.Sprintf(`
             CREATE TABLE IF NOT EXISTS %s (
@@ -54,5 +54,4 @@ func init() {
 			volume FLOAT)`, tableName)
 		DbConnection.Exec(sql)
 	}
-	fmt.Println("success.")
 }

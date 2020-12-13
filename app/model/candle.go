@@ -18,7 +18,8 @@ type Candle struct {
 }
 
 // コンストラクタ
-func NewCandle(productCode string, duration time.Duration, timeDate time.Time, open, close, high, low, volume float64) *Candle {
+func NewCandle(productCode string, duration time.Duration,
+	timeDate time.Time, open, close, high, low, volume float64) *Candle {
 	return &Candle{
 		productCode,
 		duration,
