@@ -16,14 +16,16 @@ const (
 
 var DbConnection *sql.DB
 
-// 作成するキャンドル用のテーブルを返す
+// キャンドル用のテーブル名を作成して返す
 func GetCandleTableName(productCode string, duration time.Duration) string {
 	return fmt.Sprintf("%s_%s", productCode, duration)
 }
 
 func init() {
 	// DBコネクションを行う
-	DbConnection, err := sql.Open(config.Config.SQLDriver, config.Config.DbName)
+	// ※コネクションは随時行う為、errの定義が「err :=」だと、再定義出来ないのでpanicが起こる
+	var err error
+	DbConnection, err = sql.Open(config.Config.SQLDriver, config.Config.DbName)
 	if err != nil {
 		log.Fatalln("DBConnection Error", err)
 	}
@@ -40,7 +42,7 @@ func init() {
 
 	// 設定したデュレーションの数文のテーブルを作成する
 	for _, duration := range config.Config.Durations {
-		// 引数を%s_%sで繋げた名前を取得する
+		// 引数を%s_%sで繋げて名前を取得する
 		tableName := GetCandleTableName(config.Config.ProductCode, duration)
 		sql = fmt.Sprintf(`
             CREATE TABLE IF NOT EXISTS %s (
@@ -52,4 +54,5 @@ func init() {
 			volume FLOAT)`, tableName)
 		DbConnection.Exec(sql)
 	}
+	fmt.Println("success.")
 }

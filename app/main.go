@@ -4,6 +4,7 @@ import (
 	// go mod initで、プロジェクトのパスを登録しないとエラーになる。
 
 	"auto-trading/app/config"
+	"auto-trading/app/controller"
 	"auto-trading/app/model"
 	"auto-trading/app/util"
 	"fmt"
@@ -13,6 +14,8 @@ func main() {
 	// log出力の設定
 	util.Logging(config.Config.LogFile)
 	fmt.Println(model.DbConnection)
+	controller.StreamIngestionData()
+	controller.StartWebServer()
 }
 
 // ticker, _ := apiClient.GetTicker("ETH_BTC")
