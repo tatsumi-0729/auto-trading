@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"time"
 
 	"gopkg.in/ini.v1"
 )
@@ -19,6 +20,11 @@ type ConfigList struct {
 	GetRealTimeTickerPath   string
 	SendOrderUrl            string
 	ListOrderUrl            string
+	TradeDuration           time.Duration
+	Durations               map[string]time.Duration
+	DbName                  string
+	SQLDriver               string
+	Port                    int
 }
 
 var Config ConfigList
@@ -28,6 +34,13 @@ func init() {
 	if err != nil {
 		log.Fatalln("fail to load Config", err)
 	}
+
+	durations := map[string]time.Duration{
+		"1s": time.Second,
+		"1m": time.Minute,
+		"1h": time.Hour,
+	}
+
 	Config = ConfigList{
 		ApiKey:                  cfg.Section("bitflyer").Key("api_key").String(),
 		ApiSecret:               cfg.Section("bitflyer").Key("api_secret").String(),
@@ -41,5 +54,10 @@ func init() {
 		GetRealTimeTickerPath:   cfg.Section("auto-trading").Key("get_realtime_ticker_path").String(),
 		SendOrderUrl:            cfg.Section("auto-trading").Key("send_order_url").String(),
 		ProductCode:             cfg.Section("auto-trading").Key("product_code").String(),
+		TradeDuration:           durations[cfg.Section("auto-trading").Key("trade_duration").String()],
+		Durations:               durations,
+		DbName:                  cfg.Section("db").Key("name").String(),
+		SQLDriver:               cfg.Section("db").Key("driver").String(),
+		Port:                    cfg.Section("web").Key("port").MustInt(),
 	}
 }
