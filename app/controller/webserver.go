@@ -21,6 +21,8 @@ func viewChartHandler(w http.ResponseWriter, r *http.Request) {
 
 // ハンドラを登録する
 func StartWebServer() error {
+	// ハンドラを登録して、パスを通す
 	http.HandleFunc("/chart/", viewChartHandler)
+	// デフォルトパス　/
 	return http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), nil)
 }
