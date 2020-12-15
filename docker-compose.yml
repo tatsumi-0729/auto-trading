@@ -1,0 +1,9 @@
+version: '3' 
+services:
+  app: 
+    build: . 
+    tty: true 
+    volumes:
+        - ./app:/go/src/auto-trading/app # dockerのマウント先は go/src にしないと、「cannot find package 〜　in any of: 〜」が発生する
+    environment:
+        - TZ=Asia/Tokyo
