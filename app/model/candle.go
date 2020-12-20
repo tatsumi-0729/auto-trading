@@ -96,7 +96,7 @@ func CreateCandleWithDuration(ticker bitflyer.Ticker, productCode string, durati
 	return false
 }
 
-// 引数を元に取得したキャンドルの全ての値を取得する
+// 引数を元に取得したDBのキャンドルの全ての値を取得する
 func GetAllCandle(productCode string, duration time.Duration, limit int) (dfCandle *DataFrameCandle, err error) {
 	tableName := GetCandleTableName(productCode, duration)
 	// テーブルから随時追加されてる最新のキャンドルのみを取得する

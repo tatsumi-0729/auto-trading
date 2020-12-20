@@ -42,3 +42,8 @@ func main() {
 //}
 //r, _ := apiClient.ListOrder(params)
 //fmt.Println(r)
+
+// limit := 100
+// duration := "1m"
+// durationTime := config.Config.Durations[duration]
+// df, _ := model.GetAllCandle(config.Config.ProductCode, durationTime, limit)
