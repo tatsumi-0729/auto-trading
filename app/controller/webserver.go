@@ -18,13 +18,8 @@ var templates = template.Must(template.ParseFiles("view/chart.html"))
 
 // ハンドラを定義する
 func viewChartHandler(w http.ResponseWriter, r *http.Request) {
-	limit := 100
-	duration := "1m"
-	durationTime := config.Config.Durations[duration]
-	df, _ := model.GetAllCandle(config.Config.ProductCode, durationTime, limit)
-
 	// テンプレート側にdfCandleを渡す
-	err := templates.ExecuteTemplate(w, "chart.html", df.Candles)
+	err := templates.ExecuteTemplate(w, "chart.html", nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -47,9 +42,9 @@ func APIError(w http.ResponseWriter, errMessage string, code int) {
 	w.Write(jsonError)
 }
 
-// jsonで使うapi
 var apiValidPath = regexp.MustCompile("^/api/candle/$")
 
+// こいつを通してjsonをブラウザに表示する
 func apiMakeHandler(fn func(http.ResponseWriter, *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// urlがマッチングするかを確認
@@ -92,7 +87,7 @@ func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(js)
 }
 
-// ハンドラを登録して、
+// ハンドラを登録して、サーバ通信開始
 func StartWebServer() error {
 	// ハンドラを登録して、パスを通す
 	http.HandleFunc("/api/candle/", apiMakeHandler(apiCandleHandler))
