@@ -7,14 +7,14 @@ import (
 )
 
 type Candle struct {
-	ProductCode string
-	Duration    time.Duration
-	Time        time.Time
-	Open        float64
-	Close       float64
-	High        float64
-	Low         float64
-	Volume      float64
+	ProductCode string        `json:"product_code"`
+	Duration    time.Duration `json:"duration"`
+	Time        time.Time     `json:"time"`
+	Open        float64       `json:"open"`
+	Close       float64       `json:"close"`
+	High        float64       `json:"high"`
+	Low         float64       `json:"low"`
+	Volume      float64       `json:"volume"`
 }
 
 // コンストラクタ
@@ -94,4 +94,37 @@ func CreateCandleWithDuration(ticker bitflyer.Ticker, productCode string, durati
 	currentCandle.Close = price
 	currentCandle.Save()
 	return false
+}
+
+// 引数を元に取得したキャンドルの全ての値を取得する
+func GetAllCandle(productCode string, duration time.Duration, limit int) (dfCandle *DataFrameCandle, err error) {
+	tableName := GetCandleTableName(productCode, duration)
+	// テーブルから随時追加されてる最新のキャンドルのみを取得する
+	cmd := fmt.Sprintf(`SELECT * FROM (
+		SELECT time, open, close, high, low, volume FROM %s ORDER BY time DESC LIMIT ?
+		) ORDER BY time ASC;`, tableName)
+	// 引数にlimitを渡して、クエリを実行
+	rows, err := DbConnection.Query(cmd, limit)
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+
+	dfCandle = &DataFrameCandle{}
+	dfCandle.ProductCode = productCode
+	dfCandle.Duration = duration
+	// 一行ずつdfCandleに詰める
+	for rows.Next() {
+		var candle Candle
+		candle.ProductCode = productCode
+		candle.Duration = duration
+		rows.Scan(&candle.Time, &candle.Open, &candle.Close, &candle.High, &candle.Low, &candle.Volume)
+		// dfCandleのスライスに追加
+		dfCandle.Candles = append(dfCandle.Candles, candle)
+	}
+	err = rows.Err()
+	if err != nil {
+		return
+	}
+	return dfCandle, nil
 }
